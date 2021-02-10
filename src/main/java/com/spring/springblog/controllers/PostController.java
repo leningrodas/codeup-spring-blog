@@ -9,9 +9,40 @@ public class PostController {
 
 
 
-    @RequestMapping(path = "/post", method = RequestMethod.POST)
+
+    @GetMapping(path = "/posts")
     @ResponseBody
-    public String addOne(@PathVariable int number) {
-        return number + " plus one is " + (number + 1) + "!";
+    public String postsIndex (){ return "viewing all posts.";
+
     }
+
+    @GetMapping(path = "/posts/{id}")
+    @ResponseBody
+    public String postsView (){ return "viewing individual id.";
+
+    }
+
+    @GetMapping(path = "/posts/create")
+    @ResponseBody
+    public String postsCreate (){ return "Create apost here";
+
+    }
+    @PostMapping(path = "/posts/create")
+    @ResponseBody
+    public String postsCreated (){ return "Create a post here";
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
