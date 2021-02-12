@@ -5,6 +5,7 @@ import com.spring.springblog.repositories.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class PostsController {
 
     @GetMapping(path = "/posts/create")
     @ResponseBody
-    public String postsCreate (){ return "Create apost here";
+    public String postsCreate (){ return "Create a post here";
 
     }
     @PostMapping(path = "/posts/create")
@@ -62,7 +63,24 @@ public class PostsController {
 
     }
 
+    @GetMapping("/posts/delete/{id}")
+    public RedirectView deleteAd(@PathVariable Long id, Model model) {
+        if(postDao.findById(id).isPresent()){
+            postDao.deleteById(id);
+            return new RedirectView("/posts");
+        }
+        return new RedirectView("/posts");
+    }
 
+    @GetMapping("/posts/edit/{id}")
+    public String edit(Model model) {
+        model.addAttribute("title", "Edit Post");
+        return "posts/edit/{id}";
+    }
+    @PostMapping("/posts/edit/{id}")
+    public String edited() {
+        return "posts/index";
+    }
 
 
 

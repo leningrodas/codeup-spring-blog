@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="Partials/head :: header-links"></head>
+<head th:replace="Partials/head :: header-links">
+
+</head>
 <body>
 <nav th:replace="Partials/navbar :: navbar"></nav>
 
 <!-- This is where we iterate through the Posts ArrayList -->
 <h1>Here are all the posts!</h1>
 
-<div th:each="post : ${posts}">
+<div id="ads" style="border-style: groove;" th:each="post : ${posts}">
     <h1 th:text="${post.title}"></h1>
     <p th:text="${post.body}"></p>
+    <button th:onsubmit="${post.id}" type="button" id="{id}" name="delete" value="{id}"><a href="/posts/delete/{id}">Delete</a></button>
 </div>
 
 
