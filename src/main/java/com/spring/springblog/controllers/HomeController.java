@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
-
-    @GetMapping("/home")
+    @GetMapping("/")
     @ResponseBody
 //    can name this method any name i want
     public String LandingPage () {
         return "Welcome to the landing page";
     }
+
 
 
 
