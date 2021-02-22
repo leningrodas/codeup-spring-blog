@@ -2,12 +2,27 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="Partials/head :: header-links"></head>
 <body>
-<nav th:replace="Partials/navbar :: navbar"></nav>
+<nav th:replace="partials/navbar :: navbar"></nav>
 
-<h1>Here is a single post !</h1>
-<h2 th:text="${post.title}"></h2>
-<h2 th:text="${post.body}"></h2>
+<div class="container">
+    <h1 style="text-align: center">Check this out!</h1>
+</div>
 
-<div th:replace="Partials/scripts :: assets"></div>
+<div class="container" style="text-align: center">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 th:text="${post.title}"></h3>
+                    <p th:text="${post.body}"></p>
+                    <a class="btn btn-info btn-sm" th:href="@{/posts}">All Ads</a>
+                    <a class="btn btn-dark btn-sm" th:href="@{'/posts/edit/' + ${post.id}}">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="partials/scripts :: scripts"></div>
 </body>
 </html>

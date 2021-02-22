@@ -3,15 +3,28 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="Partials/head :: header-links"></head>
 <body>
-<nav th:replace="Partials/navbar :: navbar"></nav>
-    <h1>edit a post here</h1>
+<nav th:replace="partials/navbar :: navbar"></nav>
 
+<div class="container">
+    <h1>Edit your post</h1>
+    <form action="/posts/edit" method="post">
+        <input style="visibility: hidden" type="text" name="id" th:value="${post.id}">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input id="title" name="title" class="form-control" type="text" th:value="${post.title}">
+        </div>
+        <div class="form-group">
+            <label for="body">Post Body</label>
+            <textarea id="body" name="body" class="form-control" type="text" th:text="${post.body}"></textarea>
+        </div>
+        <input type="submit" class="btn btn-block btn-primary">
+    </form>
+</div>
 
+<div th:replace="partials/scripts :: scripts"></div>
 
-
-
-
-
+</body>
+</html>
 
 </body>
 </html>

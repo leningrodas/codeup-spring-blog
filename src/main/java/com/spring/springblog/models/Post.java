@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class Post {
 
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -18,10 +19,32 @@ public class Post {
     private String title;
 
 
+//this is the syntax for the relationship
+    @ManyToOne
+    private User user;
 
+
+
+
+//constructions for the relationship execise
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+//*********
 
     public Post(){}
 
+    public Post(String title, String body, long id){
+        this.title = title;
+        this.body = body;
+        this.id = id;
+    }
 
     public long getId() {
         return id;
@@ -31,15 +54,7 @@ public class Post {
         this.id = id;
     }
 
-    public Post(String title, String body, long id){
-        this.title = title;
-        this.body = body;
-        this.id = id;
-    }
-
-
-
-    public String getTitle() {
+       public String getTitle() {
         return title;
     }
 

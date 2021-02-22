@@ -4,18 +4,30 @@
 
 </head>
 <body>
-<nav th:replace="Partials/navbar :: navbar"></nav>
+<nav th:replace="partials/navbar :: navbar"></nav>
 
-<!-- This is where we iterate through the Posts ArrayList -->
-<h1>Here are all the posts!</h1>
 
-<div id="ads" style="border-style: groove;" th:each="post : ${posts}">
-    <h1 th:text="${post.title}"></h1>
-    <p th:text="${post.body}"></p>
-    <button th:onsubmit="${post.id}" type="button" id="{id}" name="delete" value="{id}"><a href="/posts/delete/{id}">Delete</a></button>
+<div class="container">
+    <h1 style="text-align: center">Here are all the postings!</h1>
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4" th:each="post : ${posts}">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 th:text="${post.title}"></h3>
+                    <p th:text="${post.body}"></p>
+                    <a class="btn btn-info btn-sm" th:href="@{'/posts/' + ${post.id}}">View</a>
+                    <a class="btn btn-dark btn-sm" th:href="@{'/posts/edit/' + ${post.id}}">Edit</a>
+                    <a class="btn btn-danger btn-sm" th:href="@{'/posts/delete/' + ${post.id}}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div th:replace="Partials/scripts :: assets"></div>
+<div th:replace="partials/scripts :: scripts"></div>
+
 </body>
 </html>

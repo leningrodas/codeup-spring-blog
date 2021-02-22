@@ -2,6 +2,7 @@ package com.spring.springblog.controllers;
 
 import com.spring.springblog.models.Post;
 import com.spring.springblog.repositories.PostRepository;
+import com.spring.springblog.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,58 +15,42 @@ import java.util.List;
 public class PostsController {
 
     private final PostRepository postDao;
+    private final UserRepository userDao;
 
-    public PostsController(PostRepository postDao) {
+    public PostsController(PostRepository postDao, UserRepository userDao) {
         this.postDao = postDao;
-
+        this.userDao = userDao;
     }
 
 
-
-
-
-
-    @GetMapping("/posts")
-    public String Posts(Model model){
-        Post post1 = new Post("defcon1", "festival", 1);
-        Post post2 = new Post("burningman", "psychadelic", 2);
-        Post post3 = new Post("software eng", "jobs", 3);
-
-        List<Post> postList = new ArrayList<>();
-        postList.add(post1);
-        postList.add(post2);
-        postList.add(post3);
-
-        model.addAttribute("title", "all posts");
-        model.addAttribute("posts", postList);
-
+    @GetMapping(path = "/posts")
+    public String index(Model model) {
+        List<Post> posts = postDao.findAll();
+        model.addAttribute("title", "All Posts");
+        model.addAttribute("posts", posts);
         return "posts/index";
-
     }
 
-
-    @GetMapping("/posts/{id}")
-    public String postView(Model model){
-        Post post = new Post("first post", "this is the first flyer for the festival", 1);
-        model.addAttribute("title", "packages for sale");
-        model.addAttribute("post", post);
+    @GetMapping(path = "/posts/{id}")
+    public String indexById(@PathVariable Long id, Model model) {
+        model.addAttribute("title", "Single Post");
+        model.addAttribute("post", postDao.getOne(id));
         return "posts/show";
     }
 
     @GetMapping(path = "/posts/create")
-    @ResponseBody
-    public String postsCreate (){ return "Create a post here";
-
+     public String create() {
+        return "view creating a post";
     }
-    @PostMapping(path = "/posts/create")
-    @ResponseBody
-    public String postsCreated (){ return "Create a post here";
 
+    @PostMapping(path = "/posts/create")
+    public String creating() {
+        return "creating a new post";
     }
 
     @GetMapping("/posts/delete/{id}")
-    public RedirectView deleteAd(@PathVariable Long id, Model model) {
-        if(postDao.findById(id).isPresent()){
+    public RedirectView deletePost(@PathVariable Long id, Model model) {
+        if (postDao.findById(id).isPresent()) {
             postDao.deleteById(id);
             return new RedirectView("/posts");
         }
@@ -73,22 +58,21 @@ public class PostsController {
     }
 
     @GetMapping("/posts/edit/{id}")
-    public String edit(Model model) {
+    public String edit(@PathVariable Long id, Model model) {
         model.addAttribute("title", "Edit Post");
-        return "posts/edit/{id}";
-    }
-    @PostMapping("/posts/edit/{id}")
-    public String edited() {
-        return "posts/index";
+        Post postToEdit = postDao.getOne(id);
+        model.addAttribute("post", postToEdit);
+        return "posts/edit";
     }
 
-
-
-
-
-
-
-
+    @PostMapping("/posts/edit")
+    public String edited(@RequestParam Long id, @RequestParam String title, @RequestParam String body) {
+        Post post = postDao.getOne(id);
+        post.setTitle(title);
+        post.setBody(body);
+        postDao.save(post);
+        return "redirect:/posts";
+    }
 
 
 
