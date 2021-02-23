@@ -23,7 +23,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 //    syntax for the relation ship, one user can create many post
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<Post> Posts;
 
     public long getId() {

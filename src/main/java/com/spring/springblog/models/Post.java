@@ -69,4 +69,6 @@ public class Post {
     public void setBody(String body) {
         this.body = body;
     }
+
+
 }

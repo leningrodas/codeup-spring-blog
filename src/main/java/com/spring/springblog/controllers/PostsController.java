@@ -1,8 +1,10 @@
 package com.spring.springblog.controllers;
 
 import com.spring.springblog.models.Post;
+import com.spring.springblog.models.User;
 import com.spring.springblog.repositories.PostRepository;
 import com.spring.springblog.repositories.UserRepository;
+import jdk.jfr.Frequency;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,12 @@ public class PostsController {
         this.userDao = userDao;
     }
 
-
     @GetMapping(path = "/posts")
-    public String index(Model model) {
+    public String index(Model model){
         List<Post> posts = postDao.findAll();
-        model.addAttribute("title", "All Posts");
+        model.addAttribute("title", "all posts");
         model.addAttribute("posts", posts);
-        return "posts/index";
+        return "/posts/Index";
     }
 
     @GetMapping(path = "/posts/{id}")
@@ -44,8 +45,17 @@ public class PostsController {
     }
 
     @PostMapping(path = "/posts/create")
-    public String creating() {
-        return "creating a new post";
+    public String creating(@RequestParam String title, @RequestParam String body) {
+        Post post  = new Post();
+        post.setTitle(title);
+        post.setBody(body);
+
+        User user = userDao.findAll().get(0);
+        post.setUser(user);
+
+        postDao.save(post);
+
+        return "redirect:/posts/show";
     }
 
     @GetMapping("/posts/delete/{id}")
