@@ -1,35 +1,34 @@
 package com.spring.springblog.controllers;
 
+import com.spring.springblog.models.EmailService;
 import com.spring.springblog.models.Post;
 import com.spring.springblog.models.User;
 import com.spring.springblog.repositories.PostRepository;
 import com.spring.springblog.repositories.UserRepository;
-import jdk.jfr.Frequency;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class PostsController {
 
     private final PostRepository postDao;
     private final UserRepository userDao;
+    private final EmailService emailService;
 
-    public PostsController(PostRepository postDao, UserRepository userDao) {
+    public PostsController(PostRepository postDao, UserRepository userDao, EmailService emailService) {
         this.postDao = postDao;
         this.userDao = userDao;
+        this.emailService = emailService;
     }
 
     @GetMapping(path = "/posts")
     public String index(Model model){
-        List<Post> posts = postDao.findAll();
-        model.addAttribute("title", "all posts");
-        model.addAttribute("posts", posts);
-        return "/posts/Index";
+//        List<Post> posts = postDao.findAll();
+        model.addAttribute("posts", postDao.findAll());
+
+        return "posts/index";
     }
 
     @GetMapping(path = "/posts/{id}")
@@ -40,22 +39,21 @@ public class PostsController {
     }
 
     @GetMapping(path = "/posts/create")
-     public String create() {
-        return "view creating a post";
+     public String create(Model model) {
+        model.addAttribute("post", new Post());
+
+        return "posts/create";
     }
 
     @PostMapping(path = "/posts/create")
-    public String creating(@RequestParam String title, @RequestParam String body) {
-        Post post  = new Post();
-        post.setTitle(title);
-        post.setBody(body);
+    public String createPost(@ModelAttribute Post post) {
 
         User user = userDao.findAll().get(0);
         post.setUser(user);
 
-        postDao.save(post);
+        Post savePost = postDao.save(post);
 
-        return "redirect:/posts/show";
+        return "redirect:/posts";
     }
 
     @GetMapping("/posts/delete/{id}")
@@ -69,8 +67,7 @@ public class PostsController {
 
     @GetMapping("/posts/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("title", "Edit Post");
-        Post postToEdit = postDao.getOne(id);
+               Post postToEdit = postDao.getOne(id);
         model.addAttribute("post", postToEdit);
         return "posts/edit";
     }
