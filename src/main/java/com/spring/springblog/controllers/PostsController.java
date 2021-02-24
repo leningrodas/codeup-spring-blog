@@ -49,6 +49,7 @@ public class PostsController {
     public String createPost(@ModelAttribute Post post) {
 
         User user = userDao.findAll().get(0);
+
         post.setUser(user);
 
         Post savePost = postDao.save(post);
