@@ -1,8 +1,9 @@
 package com.spring.springblog.controllers;
 
-import com.spring.springblog.models.EmailService;
+import com.spring.springblog.services.EmailService;
 import com.spring.springblog.models.Post;
 import com.spring.springblog.models.User;
+import com.spring.springblog.services.UserService;
 import com.spring.springblog.repositories.PostRepository;
 import com.spring.springblog.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
@@ -16,11 +17,13 @@ public class PostsController {
     private final PostRepository postDao;
     private final UserRepository userDao;
     private final EmailService emailService;
+    private final UserService userService;
 
-    public PostsController(PostRepository postDao, UserRepository userDao, EmailService emailService) {
+    public PostsController(PostRepository postDao, UserRepository userDao, EmailService emailService, UserService userService) {
         this.postDao = postDao;
         this.userDao = userDao;
         this.emailService = emailService;
+        this.userService = userService;
     }
 
     @GetMapping(path = "/posts")
@@ -48,11 +51,17 @@ public class PostsController {
     @PostMapping(path = "/posts/create")
     public String createPost(@ModelAttribute Post post) {
 
-        User user = userDao.findAll().get(0);
-
+        User user = userService.loggedInUser();
         post.setUser(user);
 
+
         Post savePost = postDao.save(post);
+
+        String subject = "new ad created";
+        String body = "yo, user " + savePost.getUser().getUsername() +
+                " you created this ad " + savePost.getId();
+
+        emailService.prepareAndSend(savePost, subject, body);
 
         return "redirect:/posts";
     }
