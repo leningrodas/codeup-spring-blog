@@ -8,7 +8,9 @@ import java.util.List;
 public class User {
 
 
-    public User (){};
+    public User (){
+
+    };
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,14 @@ public class User {
 //    syntax for the relation ship, one user can create many post
     @OneToMany(mappedBy = "user")
     private List<Post> Posts;
+
+
+    public User(User copy){
+        this.id= copy.id;
+        this.username = copy.username;
+        this.password = copy.password;
+        this.email = copy.email;
+    }
 
     public long getId() {
         return id;
@@ -66,4 +76,5 @@ public class User {
     public void setPosts(List<Post> posts) {
         this.Posts = posts;
     }
+
 }

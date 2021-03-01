@@ -18,13 +18,13 @@ public class AdController {
         this.adsDao = adsdao;
     }
 
-
-    @GetMapping("/ads/jpa")
-    @ResponseBody
-    public List<Ad> jpaIndex() {
-        return adsDao.findAll();
-    }
 //
+//    @GetMapping("/ads/jpa")
+//    @ResponseBody
+//    public List<Ad> jpaIndex() {
+//        return adsDao.findAll();
+//    }
+////
 //    @GetMapping("/ads/jpa{id}")
 //    @ResponseBody
 //    public Ad viewJpaAd(@PathVariable long id){
