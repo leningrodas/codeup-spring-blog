@@ -23,7 +23,7 @@ public class HomeController {
     @ResponseBody
 //    can name this method any name i want
     public String LandingPage () {
-        return "Welcome to the landing page";
+        return "posts/index";
     }
 
 
