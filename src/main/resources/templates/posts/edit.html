@@ -7,7 +7,7 @@
 
 <div class="container">
     <h1>Edit your post</h1>
-    <form action="/posts/edit" method="post">
+    <form th:action="@{/posts/edit}" method="post" th:object="${post}">
         <input style="visibility: hidden" type="text" name="id" th:value="${id}">
         <div class="form-group">
             <label for="title">Title</label>
