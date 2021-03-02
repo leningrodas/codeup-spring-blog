@@ -20,7 +20,6 @@ public class HomeController {
 
 
     @GetMapping("/")
-    @ResponseBody
 //    can name this method any name i want
     public String LandingPage () {
         return "posts/index";
