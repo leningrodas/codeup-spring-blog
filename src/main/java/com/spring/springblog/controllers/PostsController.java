@@ -91,6 +91,7 @@ public class PostsController {
     public String edit(@PathVariable Long id, Model model) {
                Post postToEdit = postDao.getOne(id);
                User user = userService.loggedInUser();
+
         model.addAttribute("post", postToEdit);
         return "posts/edit";
     }
