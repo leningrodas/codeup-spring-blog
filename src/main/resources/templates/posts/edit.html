@@ -7,15 +7,15 @@
 
 <div class="container">
     <h1>Edit your post</h1>
-    <form th:action="@{/posts/edit}" method="post" th:object="${post}">
-        <input style="visibility: hidden" type="text" name="id" th:value="${id}">
+    <form th:action="posts/edit + ${post}" method="post" th:object="${post}">
+        <input style="visibility: hidden" type="text" name="id" th:value="${post.user.id}">
         <div class="form-group">
             <label for="title">Title</label>
-            <input id="title" name="title" class="form-control" type="text" th:value="${title}">
+            <input id="title" name="title" class="form-control" type="text" th:value="${post.title}">
         </div>
         <div class="form-group">
             <label for="body">Post Body</label>
-            <textarea id="body" name="body" class="form-control" type="text" th:text="${body}"></textarea>
+            <textarea id="body" name="body" class="form-control" type="text" th:text="${post.body}"></textarea>
         </div>
         <input type="submit" class="btn btn-block btn-primary">
     </form>
