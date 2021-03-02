@@ -24,8 +24,6 @@ public class PostsController {
     private final UserService userService;
 
 
-
-
     public PostsController(PostRepository postDao, UserRepository userDao, EmailService emailService, UserService userService) {
         this.postDao = postDao;
         this.userDao = userDao;
@@ -34,7 +32,7 @@ public class PostsController {
     }
 
     @GetMapping(path = "/posts")
-    public String index(Model model){
+    public String index(Model model) {
 //        List<Post> posts = postDao.findAll();
         model.addAttribute("posts", postDao.findAll());
 
@@ -49,7 +47,7 @@ public class PostsController {
     }
 
     @GetMapping(path = "/posts/create")
-     public String create(Model model) {
+    public String create(Model model) {
         model.addAttribute("post", new Post());
 
         return "posts/create";
@@ -86,13 +84,13 @@ public class PostsController {
     }
 
 
-
     @GetMapping("/posts/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-               Post postToEdit = postDao.getOne(id);
-               User user = userService.loggedInUser();
-
-        model.addAttribute("post", postToEdit);
+        Post post = postDao.getOne(id);
+        User user = userService.loggedInUser();
+        if (user.getId() == post.getUser().getId()) {
+            model.addAttribute("post", postDao.getOne(id));
+        } else return "redirect:/posts";
         return "posts/edit";
     }
 
@@ -100,11 +98,11 @@ public class PostsController {
     @PostMapping("/posts/edit/{id}")
     public String edited(@RequestParam Long id, @ModelAttribute Post post) {
         User user = userService.loggedInUser();
-        post.setUser(user);
-        postDao.save(post);
+        if (user.getId() == post.getUser().getId()) {
+            postDao.save(post);
+        } else return "redirect:/posts";
+
+
         return "redirect:/posts";
     }
-
-
-
 }
