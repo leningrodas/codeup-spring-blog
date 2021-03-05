@@ -22,7 +22,7 @@ public class HomeController {
     @GetMapping("/")
 //    can name this method any name i want
     public String LandingPage () {
-        return "posts/index";
+        return "posts/home";
     }
 
 
